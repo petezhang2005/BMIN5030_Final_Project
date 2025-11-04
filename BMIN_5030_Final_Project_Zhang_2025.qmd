@@ -1,0 +1,41 @@
+---
+title: "Standardizing Hospitalist Documentation to Improve Billing Accuracy and Efficiency"
+subtitle: "BMIN5030 Final Project"
+author: "Peter Zhang"
+format: html
+editor: visual
+number-sections: true
+embed-resources: true
+---
+
+------------------------------------------------------------------------
+
+Use this template to complete your project throughout the course. Your Final Project presentation will be based on the contents of this document. Replace the title/name above and text below with your own, but keep the headers. Feel free to change the theme and other display settings, although this is not required.
+
+## Overview {#sec-overview}
+
+This project aimed to improve billing accuracy and documentation efficiency in hospital medicine through structured documentation tools embedded in Epic. The goal was to reduce variability in note content, ensure accurate medical decision-making (MDM) capture, and enhance reimbursement alignment. Data were extracted from Epic Clarity and Caboodle, including note usage, CPT billing codes, and usability survey results.\
+
+I worked with Penn Medicine Division of hospital Medicine leadership, who emphasized the operational challenges of compliance and the need for workflow alignment, and the Penn Medicine Office of Billing Compliance and Billing Education Team, who provided insights into billing logic and the limitations of fee extraction algorithms. These perspectives informed both the design and evaluation of the intervention.
+
+## Introduction {#sec-introduction}
+
+Variability in physician documentation can obscure patient complexity and lead to systematic undercoding, directly affecting institutional metrics such as case mix index and value-based reimbursement. With 2023 E/M updates emphasizing MDM, clearly structured documentation became essential for accurate billing. However, free-text notes often lack parsable elements needed by billing extractors, leading to missed revenue.
+
+This problem bridges clinical informatics, health services research, and operational management. Informatics provides the tools for structured data capture, health services research quantifies impact on reimbursement, and operations ensures provider adoption and workflow fit.
+
+## Methods {#sec-methods}
+
+Two tools were deployed in Epic:
+1. Standardized Note Templates for H&P and progress notes with SmartLists for risk, data review, and time.
+2. Modular MDM SmartPhrase, allowing structured complexity documentation in any note.
+
+SmartData Elements captured usage, which was analyzed alongside CPT coding data from Databricks. Adoption rates, CPT code distribution, and usability scores (Post-Study System Usability Questionnaire, PSSUQ) will be extracted from Epic Clarity and Caboodle and uploaded to R studio in order to perform various analyses such as SPC p-charts, linear regression, visualization of distributions of various note-related metrics like time spent, note length and differences between physician and advance practice provider usage of tools and billing outcomes.
+
+## Results {#sec-results}
+
+Describe your results and include relevant tables, plots, and code/comments used to obtain them. You may refer to the @sec-methods as needed. End with a brief conclusion of your findings related to the question you set out to address. You can include references if you'd like, but this is not required.
+
+## Conclusion
+
+This the conclusion. The @sec-results can be invoked here.
