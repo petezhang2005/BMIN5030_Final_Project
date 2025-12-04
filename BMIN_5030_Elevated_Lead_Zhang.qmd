@@ -62,7 +62,7 @@ For the categorical overdue outcome, we fit multinomial logistic regression mode
 
 ## Results {#sec-results}
 
-### **Descriptive Characteristics**
+### Descriptive Characteristics
 
 ```{r install packages, message=FALSE, warning=FALSE}
 # Install packages
@@ -860,7 +860,7 @@ ggplot(importance_df, aes(x = reorder(variable, importance), y = importance)) +
 plot(roc_obj, print.auc = TRUE, main = "ROC: Predicting Never Following Up")
 ```
 
-A Random Forest model attempted to predict Never follow-up status based on all variables. The resulting AUC was 0.6 indicating limited predictive power. While Department and Zip Code"were the most important variables in the model, the overall performance suggests that Never follow-up status cannot be accurately predicted by the available demographic data alone. This indicates that unmeasured factors such as transportation access and other social determinants may be the primary drivers of non-adherence.
+A Random Forest model attempted to predict Never follow-up status based on all variables. The resulting AUC was 0.6 indicating limited predictive power. While Department and Zip Code were the most important variables in the model, the overall performance suggests that Never follow-up status cannot be accurately predicted by the available demographic data alone. This indicates that unmeasured factors such as transportation access and other social determinants may be the primary drivers of non-adherence.
 
 ### Results Summary
 
