@@ -189,7 +189,7 @@ lead <- lead %>%
         "Venous Level 10 to <20",
         "Venous Level 20 to <45",
         "Venous Level >=45",
-        "Total" # Added Total to factor levels
+        "Total"
       )
     )
   )
@@ -200,7 +200,7 @@ stats_by_cat <- lead %>%
 stats_total <- lead %>%
   group_by(followup_category) %>%
   summarise(n = n(), .groups = "drop") %>%
-  mutate(lead_category = "Total") # Assign the label
+  mutate(lead_category = "Total")
 lead_category_summary <- bind_rows(stats_by_cat, stats_total) %>%
   group_by(lead_category) %>%
   mutate(pct = n / sum(n)) %>%
@@ -259,7 +259,7 @@ zip_map <- zip_counts %>%
 
 
 leaflet(zip_map) %>%
-  addTiles() %>%  # default OSM tiles, free
+  addTiles() %>%
   addCircleMarkers(
     lng = ~lng, lat = ~lat,
     radius = ~sqrt(n)*2,
@@ -831,7 +831,7 @@ rf_model <- ranger(
   mtry = floor(sqrt(length(rf_vars))),
   importance = "impurity",
   probability = TRUE,
-  respect.unordered.factors = "order" # Helps speed up variables with many categories (like Zip)
+  respect.unordered.factors = "order"
 )
 
 rf_pred <- predict(rf_model, data = rf_test)
