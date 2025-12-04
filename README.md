@@ -15,7 +15,7 @@ The analysis uses a retrospective cohort of 5,688 patients to examine the influe
 
 ## Methods
 * **Study Period:** October 28, 2021 – November 25, 2025[cite: 23].
-* **Population:** Children with an elevated lead result ($\ge 3.5 \mu g/dL$) extracted from Epic Clarity.
+* **Population:** Children with an elevated lead result (>3.5 \mu g/dL) extracted from Epic Clarity.
 * **Outcomes:** Time-to-venous follow-up (primary) and categorical status (Appropriate, Overdue, Pending).
 
 ## Analytical Approach
