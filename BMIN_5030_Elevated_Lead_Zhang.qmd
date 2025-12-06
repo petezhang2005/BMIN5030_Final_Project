@@ -469,11 +469,11 @@ ggplot(df_at_time, aes(x = pct_followup, y = reorder(department, pct_followup)))
 
 ```
 
-A KM curve with all departments is useful but difficult to interpret due to visual clutter. Hence, this compliance plot shows the percentage of patients who have a venous lead follow-up at 90 days, which is a common follow-up time point.
+A KM curve with all departments is useful but difficult to interpret due to visual clutter. Hence, this compliance plot shows the percentage of patients who have a venous lead follow-up at 90 days, which is a common follow-up time point. You could also plot this at 270 days, which is the longest period of follow-up possible.
 
 ```{r cox department, message=FALSE, warning=TRUE, fig.height=14, fig.width=10}
 
-# Cox Proportional Hazards model
+# Cox proportional hazards model using Karabots as reference
 lead_dept$department <- relevel(as.factor(lead_dept$department), ref = "KARABOTS CARE NTWK")
 cox_fit <- coxph(Surv(time_to_event, event) ~ department, data = lead_dept)
 
@@ -518,7 +518,7 @@ ggplot(df_at_time, aes(x = pct_followup, y = reorder(department, pct_followup)))
 
 ```{r cox county, message=FALSE, warning=TRUE, fig.height=8, fig.width=8}
 
-# Cox Proportional Hazards model
+# Cox proportional hazards model using philly as the reference county
 lead_county$county <- relevel(as.factor(lead_county$county), ref = "PHILADELPHIA")
 cox_fit <- coxph(Surv(time_to_event, event) ~ county, data = lead_county)
 
@@ -563,7 +563,7 @@ ggplot(plot_data, aes(x = pct_overdue,
 ```
 
 ```{r overdue county, fig.height=6, fig.width=8}
-# Calculate the simple % overdue for each county with more than 20 patients
+# Calculate the % overdue for each county with more than 20 patients
 plot_data <- lead %>%
   filter(!is.na(overdue)) %>%
   group_by(county) %>%
@@ -598,7 +598,7 @@ These lollipop plots rank locations by the raw percentage of overdue patients. T
 
 ```{r heatmap ethincity x insurance, message=FALSE, warning=FALSE}
 
-#heatmap overlaying ethnicity and insurance out of curiosity, can cross map other variables as well but this one was the most interseting
+#heatmap overlaying ethnicity and insurance out of curiosity, can cross map other variables as well but this one was the most intereseting and visually appealing
 lead %>%
   filter(!is.na(overdue)) %>%
   group_by(ethnicity, insurance) %>%
@@ -626,7 +626,6 @@ This heatmap visualizes the interaction between insurance and ethnicity. The dar
 
 ```{r Cox, message=FALSE, warning=FALSE}
 # Cox Proportional Hazards Model
-# filtering out rows with less than 20 patients to have a better cox fit
 drop_small_levels <- function(df, vars, min_n = 20) {
   for (v in vars) {
     if (is.factor(df[[v]])) {
@@ -639,6 +638,7 @@ drop_small_levels <- function(df, vars, min_n = 20) {
   return(df)
 }
 
+# filtering out rows with less than 20 patients to have a better cox fit
 to_filter <- c("insurance", "ethnicity", "my_chop", "texting", "lead_category")
 lead_cox <- lead %>%
   drop_na(time_to_event, event) %>%
@@ -650,6 +650,7 @@ cox_fit <- coxph(
   data = lead_cox
 )
 
+# limit to top 20 for sack of space
 cox_df <- tidy(cox_fit, exponentiate = TRUE, conf.int = TRUE) %>%
   filter(term != "(Intercept)") %>%
   mutate(
@@ -738,9 +739,6 @@ multi_fit <- multinom(
   data = lead_multi,
   trace = FALSE
 )
-
-#summary(multi_fit)
-
 ```
 
 ```{r stacked bar, message=FALSE, warning=FALSE}
@@ -845,7 +843,7 @@ A Random Forest model attempted to predict Never follow-up status based on all v
 ### Results Summary
 
 1.  The study included 5,688 patients with elevated blood lead levels (≥ 3.5μg/dL). The cohort was predominantly male (56%) and insured via Medicaid (55%). The most common racial/ethnic demographics were Non-Hispanic Black (45%) and Non-Hispanic White (23%). Geographically, the burden of elevated lead levels was concentrated in West Philadelphia and out Philadelphia in Norristown and Coatesville.
-2.  Overall adherence to venous follow-up was dissapointing. At the time of data extraction, 60% of patients were classified as "Overdue," while only 27% had completed "Appropriate" follow-up. Time-to-event analysis revealed that the majority of successful follow-ups occur shortly after the initial elevation; if a patient does not return quickly, the probability of future follow-up declines rapidly. A large percentage of patients never follow-up.
+2.  Overall adherence to venous follow-up was disappointing. At the time of data extraction, 60% of patients were classified as "Overdue," while only 27% had completed "Appropriate" follow-up. Time-to-event analysis revealed that the majority of successful follow-ups occur shortly after the initial elevation; if a patient does not return quickly, the probability of future follow-up declines rapidly. A large percentage of patients never follow-up.
 3.  Multivariable analyses identified significant disparities in care.
     -   Patients with Commercial insurance followed up significantly faster than those with Medicare or Medicaid (p\<0.0001).
     -   Non-Hispanic Black and Hispanic patients exhibited significantly slower time-to-follow-up compared to Asian and White patients (p\<0.0001).
@@ -858,4 +856,4 @@ This retrospective analysis of 5,688 children within the CHOP Primary Care Netwo
 
 The data reveals a "tale of two cities": patients with Commercial insurance and those residing in suburban counties experience significantly faster and more complete follow-up than those with Medicaid or those living in urban Philadelphia. Furthermore, while the system effectively drives urgent confirmation of high capillary screens, there is a notable lag in the ongoing monitoring of venous elevations. This may be partially explained by clinically appropriate spacing for venous levels, but the data suggests that there are other issues affecting venous follow that should be investigated further.
 
-The poor predictive power of the Random Forest model (AUC 0.6) is a significant negative finding. Non-adherence cannot be accurately predicted by demographics alone. This suggests that other barriers may exist such as access to transportation, distance to lab testing/lab access, low health literacy, and asymptomatic nature of elevated lead may contribute to the observed 60% overdue rate, rather than the discrete characteristics in the EHR analyzed in this project.
+The poor predictive power of the Random Forest model (AUC 0.6) is a significant negative finding. Non-adherence cannot be accurately predicted by the discrete data within the EHR alone. This suggests that other barriers may exist such as access to transportation, distance to lab testing/lab access, low health literacy, and the asymptomatic nature of elevated lead that may contribute to the observed 60% overdue rate, rather than characteristics analyzed in this project.
